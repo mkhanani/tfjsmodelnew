@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Load the model
     let model;
     (async () => {
-        model = await tf.loadLayersModel('https://mkhanani.github.io/tfjsmodel/model.json');
+        model = await tf.loadLayersModel('https://mkhanani.github.io/tfjsmodelnew/model.json');
     })();
 
     // Predict function
