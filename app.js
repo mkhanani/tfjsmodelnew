@@ -11,15 +11,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Predict function
     async function predict(input) {
-        const resizedImage = tf.image.resizeBilinear(input, [28, 28]);
-        const normalizedImage = resizedImage.div(tf.scalar(255));
-        const batchedImage = normalizedImage.expandDims(0);
-        const prediction = model.predict(batchedImage);
-        const topClass = prediction.argMax(-1);
-        const classNames = ['class1', 'class2', 'class3']; // Replace with your class names
-        const classIndex = await topClass.data();
-        resultDiv.textContent = `Predicted class: ${classNames[classIndex]}`;
-    }
+    const image = new Image();
+    image.src = URL.createObjectURL(input);
+    await image.decode();
+
+    const resizedImage = tf.image.resizeBilinear(tf.browser.fromPixels(image), [28, 28]);
+    const normalizedImage = resizedImage.div(tf.scalar(255));
+    const batchedImage = normalizedImage.expandDims(0);
+    const prediction = model.predict(batchedImage);
+    const topClass = prediction.argMax(-1);
+    const classNames = ['class1', 'class2', 'class3']; // Replace with your class names
+    const classIndex = await topClass.data();
+    resultDiv.textContent = `Predicted class: ${classNames[classIndex]}`;
+}
 
     // File input change event
     imageInput.addEventListener('change', () => {
